@@ -59,6 +59,11 @@ public:
   // to it is returned. Otherwise this function returns NULL.
   bst_node* get_node(bst_node* subt, int data);
 
+  // Given a node, return its parent node
+  // Returns null if supposed child node is not in tree
+  // Also returns null if supposed child is the root node
+  bst_node* get_parent(bst_node* child);
+
   // size returns the number of nodes in the subtree pointed to by subt. If the
   // tree is empty (t is NULL), it returns zero.
   int size(bst_node* subt);
