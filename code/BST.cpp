@@ -3,7 +3,7 @@
 #include "BST.h"
 
 BST::BST() {
-  // Here is one way to implement the constructor. Keep or change it, up to you.
+  // Constructor
   root = new bst_node*;
   *root = NULL;
 }
@@ -106,61 +106,23 @@ void BST::remove(int data) {
     delete doomed_node;
     return;
     }
-    // remove non-root node with two children
-    else if (doomed_node != *root){
-      //  Replace it with (arbitrarily) the predecessor.
-      bst_node* buddy = doomed_node->left;
-      while (buddy->right != nullptr){
-        buddy = buddy->right;
+    // remove node with two children
+    else {
+      //  Replace it with (arbitrarily) the successor.
+      bst_node* buddy = doomed_node->right;
+      while (buddy->left != nullptr){
+        buddy = buddy->left;
+      }
+      // delete old buddy spot
+      if (get_parent(buddy)->left == buddy){
+        get_parent(buddy)->left = buddy->right;
+      }
+      else {
+        get_parent(buddy)->right = buddy->right;
       }
       doomed_node->data = buddy->data;
-      // delete old buddy spot
-      // hard coding it because the remove function takes data as input not node oops
-      // remove buddy with no children
-      if (buddy->left == nullptr && buddy->right == nullptr){
-        if (get_parent(buddy)->left == buddy){
-          get_parent(buddy)->left = nullptr;
-        }
-        else{
-          get_parent(buddy)->right = nullptr;
-        }
-        delete buddy;
-        return;
-      }
-      // remove buddy with exactly one child on the right
-      else if (buddy != *root && buddy->left == nullptr){
-        bst_node* child = buddy->right;
-        if (buddy == *root){
-          *root = buddy->right;
-          delete buddy;
-          return;
-        }
-        else if (get_parent(buddy)->left == buddy){
-          get_parent(buddy)->left = child;
-        }
-        else{
-          get_parent(buddy)->right = child;
-        }
       delete buddy;
       return;
-      }
-      // remove buddy with exactly one child on the left
-      else if (buddy->right == nullptr){
-        bst_node* child = buddy->left;
-        if (buddy == *root){
-          *root = buddy->left;
-          delete buddy;
-          return;
-        }
-        else if (get_parent(buddy)->left == buddy){
-          get_parent(buddy)->left = child;
-        }
-        else{
-          get_parent(buddy)->right = child;
-        }
-      delete buddy;
-      return;
-      }
     }
   }
 }
@@ -221,13 +183,11 @@ void BST::to_vector(bst_node* subt, vector<int>& vec) {
 }
 
 bst_node* BST::get_root() {
-  // This function is implemented for you
   if (*root == NULL)
     return NULL;
   return *root;
 }
 
 void BST::set_root(bst_node** new_root) {
-  // This function is implemented for you
   root = new_root;
 }

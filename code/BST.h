@@ -38,16 +38,11 @@ public:
   void insert(bst_node* new_node);
 
   // insert_data creates a new node with the given data value and inserts it
-  // into the tree. STRONG HINT: insert_data should use the insert method.
-  // ANOTHER STRONG HINT: consider using init_node(data) to create a bst_node*.
+  // into the tree.
   void insert_data(int data);
 
   // This removes a node from the tree whose data value matches the input. If no
   // node in the tree contains the given data, this function has no effect.
-  //
-  // Implementation note: when removing a node, you often must do some pointer
-  // adjustments involing either the predecessor or successor. The unit tests
-  // expect you to use the successor in those cases.
   void remove(int data);
 
   // contains returns true if any node in the subtree pointed to by subt
@@ -79,21 +74,15 @@ public:
   // vec.push_back(4) adds 4 to the end of the vector).
   void to_vector(bst_node* subt, vector<int>& vec);
 
-  // This function is implemented for you. It returns the root pointer.
+  // Returns the root pointer.
   bst_node* get_root();
 
-  // This function is implemented for you. It sets a given pointer as the new
-  // root pointer.
+  // Sets a given pointer as the new root pointer.
   void set_root(bst_node** new_root);
-
-  // you can add add more public member variables and member functions here if
-  // you need
 
 private:
   // this double pointer always will point to the root pointer of the tree
   bst_node** root;
-  // you can add add more private member variables and member functions here if
-  // you need
 };
 
 #endif // BST_H__
