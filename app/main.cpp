@@ -1,5 +1,5 @@
 #include <iostream>
-#include "../code/BST.h"
+#include "../code/RBT.h"
 
 using namespace std;
 

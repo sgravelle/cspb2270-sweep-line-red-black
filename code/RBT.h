@@ -1,5 +1,5 @@
-#ifndef BST_H__
-#define BST_H__
+#ifndef RBT_H__
+#define RBT_H__
 
 #include <memory>
 #include <string>
@@ -7,61 +7,80 @@
 
 using namespace std;
 
-// bst_node is the binary search tree node structure.
-struct bst_node {
+// rbt_node is the red-black tree node structure.
+struct rbt_node {
   int data;
-  bst_node* left;
-  bst_node* right;
+  bool is_red; // so false means it's black
+  rbt_node* left;
+  rbt_node* right;
 };
 
-// Binary search tree:
+// Red-black tree:
 //
 // From any subtree node t, the left subtree's data values must be
 // less than t's data value. The right subtree's data values must be
 // greater than or equal to t's data value.
-class BST {
+class RBT {
 public:
   // The constructor initializes class variables and pointers here if needed.
   // Set root to null.
-  BST();
+  RBT();
 
   // deconstructor - use this to clean up all memory that the BST has allocated
   // but not returned with the 'delete' keyword.
-  ~BST();
+  ~RBT();
 
-  // init_node initializes a new bst_node from the heap using the given
+  // init_node initializes a new rbt_node from the heap using the given
   // data, and two NULL children, and returns a pointer to it.
-  bst_node* init_node(int data);
+  // The node is initially colored black.
+  rbt_node* init_node(int data);
 
-  // insert places the new_node in a proper location in the tree while obeying
+  // rotate left at the given node
+  void rotate_left(rbt_node* node);
+
+  // rotate right at the given node
+  void rotate_right(rbt_node* node);
+
+  // bst_insert is the exact insert function for an unbalanced binary search tree.
+  // It places the new_node in a proper location in the tree while obeying
   // the invariant. On return, root points to the root of the tree.
-  void insert(bst_node* new_node);
+  void bst_insert(rbt_node* new_node);
+
+  // balance_tree takes an unbalanced binary tree
+  // Makes it balanced and recolors nodes to make it a valid red-black tree
+  // Input is the node whose recent insertion has made the tree unbalanced
+  void balance_tree(rbt_node* node);
+
+  // insert first performs bst_insert,
+  // then recolors and balances the tree
+  void insert(rbt_node* new_node);
 
   // insert_data creates a new node with the given data value and inserts it
   // into the tree.
   void insert_data(int data);
 
-  // This removes a node from the tree whose data value matches the input. If no
-  // node in the tree contains the given data, this function has no effect.
+  // This removes a node from the tree whose data value matches the input.
+  // If no node in the tree contains the given data, this function has no effect.
+  // Rebalances the tree and recolors nodes as needed.
   void remove(int data);
 
   // contains returns true if any node in the subtree pointed to by subt
   // contains the given data value, false otherwise.
-  bool contains(bst_node* subt, int data);
+  bool contains(rbt_node* subt, int data);
 
   // get_node searches through the subtree pointed to by subt for a node that
   // contains the given data value. If such a node is found, a pointer
   // to it is returned. Otherwise this function returns NULL.
-  bst_node* get_node(bst_node* subt, int data);
+  rbt_node* get_node(rbt_node* subt, int data);
 
   // Given a node, return its parent node
   // Returns null if supposed child node is not in tree
   // Also returns null if supposed child is the root node
-  bst_node* get_parent(bst_node* child);
+  rbt_node* get_parent(rbt_node* child);
 
   // size returns the number of nodes in the subtree pointed to by subt. If the
   // tree is empty (t is NULL), it returns zero.
-  int size(bst_node* subt);
+  int size(rbt_node* subt);
 
   // to_vector fills an integer vector to reflect the contents of the subtree
   // pointed to by subt. Size of the filled array will be the same as the
@@ -72,17 +91,17 @@ public:
   // Note: the vector "vec" will be passed to this function as an empty vector
   // and you can add elements to it by using push_back() member function (e.g.
   // vec.push_back(4) adds 4 to the end of the vector).
-  void to_vector(bst_node* subt, vector<int>& vec);
+  void to_vector(rbt_node* subt, vector<int>& vec);
 
   // Returns the root pointer.
-  bst_node* get_root();
+  rbt_node* get_root();
 
   // Sets a given pointer as the new root pointer.
-  void set_root(bst_node** new_root);
+  void set_root(rbt_node** new_root);
 
 private:
   // this double pointer always will point to the root pointer of the tree
-  bst_node** root;
+  rbt_node** root;
 };
 
-#endif // BST_H__
+#endif // RBT_H__
