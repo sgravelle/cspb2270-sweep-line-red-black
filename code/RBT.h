@@ -102,6 +102,43 @@ public:
 private:
   // this double pointer always will point to the root pointer of the tree
   rbt_node** root;
+
+  // this function finds the "grandparent" node
+  // If the node or its parent is the root, returns nullptr
+  rbt_node* find_gramps(rbt_node* node);
+
+  // finds the "uncle" node
+  // that is, the sibling of the parent node
+  // returns nullptr if none exists
+  rbt_node* find_uncle(rbt_node* node);
+
+  rbt_node* get_sibling(rbt_node* node);
+
+  rbt_node* get_predecessor(rbt_node* node);
+
+  // Returns true iff a node is red (null counts as black)
+  bool is_non_null_red(rbt_node* node);
+
+  // Returns true iff a node is black (including null)
+  bool is_null_or_black(rbt_node* node);
+
+  // Returns true if both children are black (including nullptr)
+  // Returns false if node has any red child
+  bool both_child_black(rbt_node* node);
+
+  // Monster helper function for removal operation
+  // The purpose is to recolor and rotate as needed
+  // to preserve the red-black property that every path
+  // has the same number of black nodes
+  void prepare_to_remove(rbt_node* node);
+
+  // Six cases to test within the prepare_to_remove function
+  bool case1(rbt_node* node);
+  bool case2(rbt_node* node, rbt_node* sibling);
+  bool case3(rbt_node* node, rbt_node* sibling);
+  bool case4(rbt_node* node, rbt_node* sibling);
+  bool case5(rbt_node* node, rbt_node* sibling);
+  bool case6(rbt_node* node, rbt_node* sibling);
 };
 
 #endif // RBT_H__
